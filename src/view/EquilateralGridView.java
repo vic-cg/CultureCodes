@@ -21,9 +21,9 @@ public class EquilateralGridView {
 		float bright = 1.0f;
 		p.fill(0.0f,0.8f,bright,.3f);
 		gfx.triangle(grid.getTri());
-		p.println(grid.getTri());
+		
 		for(EquilateralGrid e : grid.getSubGrids()) {			
-			bright *= 0.9f;
+//			bright *= 0.9f;
 			p.fill(0.0f,0.8f,bright);
 			gfx.triangle(e.getTri());
 		}

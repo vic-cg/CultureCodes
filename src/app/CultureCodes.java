@@ -23,7 +23,7 @@ public class CultureCodes extends PApplet {
 	
 	@Override
 	public void setup() {
-		size(1920,1080);
+		size(800,600);
 		noStroke();
 		gfx=new ToxiclibsSupport(this);
 		
@@ -34,7 +34,7 @@ public class CultureCodes extends PApplet {
 		gridView = new EquilateralGridView(this, grid);
 		
 		
-		babyGrid = grid.addGrid(new Vec3D(16,4,0), floor(1));		
+		babyGrid = grid.addGrid(new Vec3D(16,4,0), floor(10));		
 //		grid.addGrid(new Vec3D(.73f,0.27f,0.f), floor(random(1,10)));
 //		grid.addGrid(new Vec3D(.8f,0.2f,0.f), floor(random(1,10)));
 		
@@ -46,7 +46,15 @@ public class CultureCodes extends PApplet {
 		fill(200,100,100,100);
 //		translate(0.5f*width - grid.getCentroid().getComponent(0), 0.67f*height - grid.getCentroid().getComponent(1));
 		translate(0.5f * width, 0.667f*height);
-
+		
+		if(frameCount % 90 == 0) {
+			int a = floor(random(0,grid.getRes()));
+			int b = floor(random(0,grid.getRes() - a));
+			int c = max(grid.getRes() - a - b, 0);
+			Vec3D move = new Vec3D(a,b,c);
+			
+			babyGrid.moveRelativeTo(grid, move);
+		}
 		
 		fill(200,200,0);
 		pushMatrix();
@@ -71,7 +79,7 @@ public class CultureCodes extends PApplet {
 //		popMatrix();
 //		ellipse(0,0,3,3);
 		
-		noLoop();
+//		noLoop();
 		
 	}
 	
