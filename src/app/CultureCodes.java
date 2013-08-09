@@ -16,7 +16,7 @@ public class CultureCodes extends PApplet {
 	ToxiclibsSupport gfx;
 
 	int RES = 20;
-	float triSize;
+	float triHeight;
 	ArrayList<Vec3D> bs = new ArrayList<Vec3D>();	
 	EquilateralGrid grid, babyGrid;
 	EquilateralGridView gridView;
@@ -28,8 +28,8 @@ public class CultureCodes extends PApplet {
 		gfx=new ToxiclibsSupport(this);
 		
 		//magic number from geometry of equilateral triangle (height = 1.5; side = 1.73 )
-		triSize = height * (1.73f/1.5f);
-		triSize /= 1.73f;
+		triHeight = height / 1.5f;
+//		triHeight /= 1.73f;
 		
 		
 		grid = EquilateralGrid.constructGrid(RES);
@@ -54,15 +54,15 @@ public class CultureCodes extends PApplet {
 		
 		fill(200,200,0);
 		pushMatrix();
-		scale(triSize); println(triSize);
-		gridView.draw(gfx,triSize);			
+		scale(triHeight); println(triHeight);
+		gridView.draw(gfx,triHeight);			
 		popMatrix();
 		
 		//draw grid points
 		fill(100,0,0);				
 		for( Vec3D b : bs) {
 			Vec2D pt = grid.fromBarycentric(b);
-			ellipse(pt.x, pt.y,1.0f/triSize, 1.0f/triSize);
+			ellipse(pt.x, pt.y,1.0f/triHeight, 1.0f/triHeight);
 		}
 
 //		pushMatrix();
@@ -78,9 +78,9 @@ public class CultureCodes extends PApplet {
 		translate(0.0f, -.333333f*height);
 		fill(0,100);
 		pushMatrix();
-		scale(-triSize);
+		scale(-triHeight);
 		noStroke();
-		gridView.draw(gfx, triSize);
+		gridView.draw(gfx, triHeight);
 		popMatrix();
 		ellipse(0,0,3,3);
 		
