@@ -6,8 +6,10 @@ import toxi.processing.*;
 import view.EquilateralGridView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import model.EquilateralGrid;
+import model.Weave;
 
 
 public class CultureCodes extends PApplet {
@@ -15,11 +17,12 @@ public class CultureCodes extends PApplet {
 	
 	ToxiclibsSupport gfx;
 
-	int RES = 20;
+	int RES = 5;
 	float triHeight;
 	ArrayList<Vec3D> bs = new ArrayList<Vec3D>();	
 	EquilateralGrid grid, babyGrid, destGrid;
 	EquilateralGridView gridView;
+	Weave w;
 	
 	@Override
 	public void setup() {
@@ -29,13 +32,15 @@ public class CultureCodes extends PApplet {
 		
 		triHeight = height / 1.5f;
 		
-		grid = EquilateralGrid.constructGrid(RES);
+		grid = EquilateralGrid.constructGrid(RES, EquilateralGrid.Orientation.UP);
 		bs = grid.getGridPoints();
 		gridView = new EquilateralGridView(this, grid);
 		
 		
-		babyGrid = grid.addGrid(new Vec3D(16,4,0), floor(10));
-		destGrid = grid.addGrid(new Vec3D(19,1,0), floor(2));
+		babyGrid = grid.addGrid(new Vec3D(0,4,1), floor(1), EquilateralGrid.Orientation.DOWN);
+//		destGrid = grid.addGrid(new Vec3D(19,1,0), floor(2));
+		
+		w = Weave.createWeave(grid, 1);
 		
 	}
 	
@@ -46,15 +51,19 @@ public class CultureCodes extends PApplet {
 //		translate(0.5f*width - grid.getCentroid().getComponent(0), 0.67f*height - grid.getCentroid().getComponent(1));
 		translate(0.5f * width, 0.667f*height);
 		
+//		Vec3D p = new Vec3D(10,0,0);
+//		Vec3D end = new Vec3D(-5,15,0);
+//		Vec3D t = p.interpolateTo(end, frameCount % 400 / 400.0f ); 
+//		babyGrid.moveRelativeTo(grid, t);
 		
-		float t = map(mouseX,0,width,0,1.0f);
-		Vec3D current = babyGrid.getApexInParentSpace(grid);
-		
-		Vec3D beg = new Vec3D(16,4,0);
-		Vec3D end = new Vec3D(19,1,0);
-		Vec3D newApex =  beg.interpolateTo(end, t);
-		babyGrid.moveRelativeTo(grid, newApex);
-		
+//		float t = map(mouseX,0,width,0,1.0f);
+//		Vec3D current = babyGrid.getApexInParentSpace(grid);
+//		
+//		Vec3D beg = new Vec3D(16,4,0);
+//		Vec3D end = new Vec3D(19,1,0);
+//		Vec3D newApex =  beg.interpolateTo(end, t);
+//		babyGrid.moveRelativeTo(grid, newApex);
+//		
 //		if(frameCount % 90 == 0) {
 //			int a = floor(random(0,grid.getRes()));
 //			int b = floor(random(0,grid.getRes() - a));
@@ -66,15 +75,19 @@ public class CultureCodes extends PApplet {
 		
 		fill(200,200,0);
 		pushMatrix();
+		pushStyle();
 		scale(triHeight); 
-		gridView.draw(gfx);			
+		gridView.draw(gfx);
+		popStyle();
 		popMatrix();
 		
 		//draw grid points
-		fill(100,0,0);				
+		fill(100,0,0);		
+		noStroke();
+		scale(triHeight);
 		for( Vec3D b : bs) {
 			Vec2D pt = grid.fromBarycentric(b);
-			ellipse(pt.x, pt.y,1.0f/triHeight, 1.0f/triHeight);
+			ellipse(pt.x, pt.y,10.f/triHeight, 10.f/triHeight);
 		}
 
 //

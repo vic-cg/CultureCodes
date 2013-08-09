@@ -23,8 +23,8 @@ public class EquilateralGridView {
 		gfx.triangle(grid.getTri());
 		
 		for(EquilateralGrid e : grid.getSubGrids()) {			
-//			bright *= 0.9f;
-			p.fill(0.0f,0.8f,bright);
+			bright *= 0.9f;
+			p.fill(0.0f,0.8f,bright,0.8f);
 			gfx.triangle(e.getTri());
 		}
 	}

@@ -28,44 +28,50 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 	private int res;
 	private Triangle2D tri;
 	private ArrayList<EquilateralGrid> subGrids;
-//	private Vec3D
+	Orientation orientation;
+
+	// private Vec3D
+
+	public static enum Orientation {
+		UP(), DOWN();
+	}
 
 	private EquilateralGrid(int resolution) {
 		res = resolution;
 
-		
 		tri = new Triangle2D();
 		subGrids = new ArrayList<EquilateralGrid>();
-		
+		orientation = Orientation.UP;
 	}
 
 	/**
 	 * add an equilateral grid to this grid
 	 * 
 	 * @param location
-	 *            the location of the sub grid within the parent. The coordinates are specified
-	 *            as un-normalized integer values in terms of the parent triangles Resolution. (@see getRes())
+	 *            the location of the sub grid within the parent. The
+	 *            coordinates are specified as un-normalized integer values in
+	 *            terms of the parent triangles Resolution. (@see getRes())
 	 * @param size
 	 *            the number of grid points in the parent the subgrid should
 	 *            span
 	 * @return the equilateral grid created
 	 */
-	public EquilateralGrid addGrid(Vec3D location, int resolution) {
-		EquilateralGrid result = constructGrid(resolution);
+	public EquilateralGrid addGrid(Vec3D location, int resolution, Orientation o) {
+		EquilateralGrid result = constructGrid(resolution, o);
 
 		result.setPositionRelativeTo(this, location);
-//		float sidelen = 1.0f * resolution / this.res;
-//		// scale this in relation to the parent
-//		Vec3D baryvertex0 = location.scale(1.0f/getRes());
-//		Vec3D baryvertex1 = baryvertex0.add(new Vec3D(-sidelen, sidelen, 0));
-//		Vec3D baryvertex2 = baryvertex0.add(new Vec3D(-sidelen, 0, sidelen));
-//
-//		// get the coordinates of the subtriangle in X,Y of the parent
-//		Vec2D A = this.tri.fromBarycentric(baryvertex0);
-//		Vec2D B = this.tri.fromBarycentric(baryvertex1);
-//		Vec2D C = this.tri.fromBarycentric(baryvertex2);
-//
-//		result.setVerts(A, B, C);
+		// float sidelen = 1.0f * resolution / this.res;
+		// // scale this in relation to the parent
+		// Vec3D baryvertex0 = location.scale(1.0f/getRes());
+		// Vec3D baryvertex1 = baryvertex0.add(new Vec3D(-sidelen, sidelen, 0));
+		// Vec3D baryvertex2 = baryvertex0.add(new Vec3D(-sidelen, 0, sidelen));
+		//
+		// // get the coordinates of the subtriangle in X,Y of the parent
+		// Vec2D A = this.tri.fromBarycentric(baryvertex0);
+		// Vec2D B = this.tri.fromBarycentric(baryvertex1);
+		// Vec2D C = this.tri.fromBarycentric(baryvertex2);
+		//
+		// result.setVerts(A, B, C);
 		subGrids.add(result);
 
 		return result;
@@ -106,54 +112,68 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 
 		return result;
 	}
-	
+
 	/**
 	 * return the non normalized barycentric coordinate in parent space
+	 * 
 	 * @param g
 	 * @return
 	 */
-	public Vec3D getApexInParentSpace(EquilateralGrid g) {		
-		return g.toBarycentric( tri.a );
+	public Vec3D getApexInParentSpace(EquilateralGrid g) {
+		return g.toBarycentric(tri.a);
 	}
 
-
 	/**
-	 * move this grid relative to the coordinate system of another grid. The method assumes that
-	 * the current barycentric coordinates of the grid are in terms of the g.
+	 * move this grid relative to the coordinate system of another grid. The
+	 * method assumes that the current barycentric coordinates of the grid are
+	 * in terms of the g.
 	 * 
 	 * @param g
-	 * 			The parent grid to move relative to
+	 *            The parent grid to move relative to
 	 * @param location
-	 * 			Non-normalized BaryCentric coordinates of the destination for the grids Apex
+	 *            Non-normalized BaryCentric coordinates of the destination for
+	 *            the grids Apex
 	 */
 	public void moveRelativeTo(EquilateralGrid g, Vec3D location) {
-		Vec2D destination = g.fromBarycentric( location.scale(1.0f/g.getRes()) );
+		Vec2D destination = g
+				.fromBarycentric(location.scale(1.0f / g.getRes()));
 		Vec2D dPos = destination.sub(tri.a);
-	
+
 		tri.a.addSelf(dPos);
 		tri.b.addSelf(dPos);
 		tri.c.addSelf(dPos);
 	}
 
 	public void setPositionRelativeTo(EquilateralGrid g, Vec3D location) {
-		
 		float sidelen = 1.0f * this.res / g.getRes();
-		//scale this in relation to the parent
-		Vec3D baryvertex0 = location.scale(1.0f/g.getRes());
-		Vec3D baryvertex1 = baryvertex0.add(new Vec3D(-sidelen, sidelen, 0));
-		Vec3D baryvertex2 = baryvertex0.add(new Vec3D(-sidelen, 0, sidelen));
+		Vec3D baryvertex0, baryvertex1, baryvertex2;
+		Vec2D a, b, c;
 
-		// get the coordinates of the subtriangle in X,Y of the parent
-		Vec2D A = this.tri.fromBarycentric(baryvertex0);
-		Vec2D B = this.tri.fromBarycentric(baryvertex1);
-		Vec2D C = this.tri.fromBarycentric(baryvertex2);
+		if (orientation == Orientation.UP) {
+			// scale this in relation to the parent
+			baryvertex0 = location.scale(1.0f / g.getRes());
+			baryvertex1 = baryvertex0.add(new Vec3D(-sidelen, sidelen, 0));
+			baryvertex2 = baryvertex0.add(new Vec3D(-sidelen, 0, sidelen));
 
-		this.setVerts(A, B, C);
+			// get the coordinates of the subtriangle in X,Y of the parent
+			a = this.tri.fromBarycentric(baryvertex0);
+			b = this.tri.fromBarycentric(baryvertex1);
+			c = this.tri.fromBarycentric(baryvertex2);
+		} else {
+			// scale this in relation to the parent
+			baryvertex0 = location.scale(1.0f / g.getRes());
+			baryvertex1 = baryvertex0.add(new Vec3D(sidelen, -sidelen, 0));
+			baryvertex2 = baryvertex0.add(new Vec3D(0, -sidelen, sidelen));
+
+			// get the coordinates of the subtriangle in X,Y of the parent
+			a = this.tri.fromBarycentric(baryvertex0);
+			b = this.tri.fromBarycentric(baryvertex1);
+			c = this.tri.fromBarycentric(baryvertex2);			
+		}
 		
+		this.setVerts(a, b, c);
 	}
-	
 
-	
 	public int getRes() {
 		return res;
 	}
@@ -169,6 +189,7 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 	public Vec3D toBarycentric(Vec2D p) {
 		return tri.toBarycentric(p);
 	}
+
 	public Vec2D fromBarycentric(Vec3D b) {
 		return tri.fromBarycentric(b);
 	}
@@ -184,17 +205,27 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 	 * @param resolution
 	 * @return
 	 */
-	public static EquilateralGrid constructGrid(int resolution) {
+	public static EquilateralGrid constructGrid(int resolution, Orientation o) {
 		EquilateralGrid result = new EquilateralGrid(resolution);
+		result.orientation = o;
+		Vec2D a, b, c;
 
-		Vec2D A = new Vec2D(0, -1);
+		if (result.orientation == Orientation.UP) {
+			a = new Vec2D(0, -1);
+			b = new Vec2D(a.x * cos120 + a.y * sin120, -a.x * sin120 + a.y
+					* cos120);
+			c = new Vec2D(a.x * negcos120 + a.y * negsin120, -a.x * negsin120
+					+ a.y * negcos120);
+		} else {
+			a = new Vec2D(0, 1);
+			c = new Vec2D(a.x * cos120 + a.y * sin120, -a.x * sin120 + a.y
+					* cos120);
+			b = new Vec2D(a.x * negcos120 + a.y * negsin120, -a.x * negsin120
+					+ a.y * negcos120);
+		}
 		// this just does a rotation of the v1 vector positive 120 to get v2 and
 		// negative 120 to get v3
-		Vec2D B = new Vec2D(A.x * cos120 + A.y * sin120, -A.x * sin120 + A.y
-				* cos120);
-		Vec2D C = new Vec2D(A.x * negcos120 + A.y * negsin120, -A.x * negsin120
-				+ A.y * negcos120);
-		result.setVerts(A, B, C);		
+		result.setVerts(a, b, c);
 
 		return result;
 	}
