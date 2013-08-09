@@ -29,9 +29,8 @@ public class CultureCodes extends PApplet {
 		
 		//magic number from geometry of equilateral triangle (height = 1.5; side = 1.73 )
 		triSize = height * (1.73f/1.5f);
+		triSize /= 1.73f;
 		
-		println(triSize);
-//		triSize =  height * .866f / 1.5f ;
 		
 		grid = EquilateralGrid.constructGrid(RES);
 		bs = grid.getGridPoints();
@@ -50,19 +49,44 @@ public class CultureCodes extends PApplet {
 		background(255);
 		fill(200,100,100,100);
 //		translate(0.5f*width - grid.getCentroid().getComponent(0), 0.67f*height - grid.getCentroid().getComponent(1));
-		translate(0.5f*width, 0.67f*height);		
+		translate(0.0f * width, 0.667f*height);
+
 		
 		fill(200,200,0);
-				
+		pushMatrix();
+		scale(triSize); println(triSize);
 		gridView.draw(gfx,triSize);			
+		popMatrix();
 		
+		//draw grid points
 		fill(100,0,0);				
 		for( Vec3D b : bs) {
 			Vec2D pt = grid.fromBarycentric(b);
 			ellipse(pt.x, pt.y,1.0f/triSize, 1.0f/triSize);
 		}
+
+//		pushMatrix();
+//		translate(0.5f*width,-0.3f*height);
+//		scale(-1.0f * triSize);
+//		gridView.draw(gfx,triSize);
+//		popMatrix();
 		
+
+		translate(.866f / 1.5f * height,0 );
+//		stroke(200,0,0);
+		line(0,0,0,height);
+		translate(0.0f, -.333333f*height);
+		fill(0,100);
+		pushMatrix();
+		scale(-triSize);
+		noStroke();
+		gridView.draw(gfx, triSize);
+		popMatrix();
+		ellipse(0,0,3,3);
+		
+//		popMatrix();
 		noLoop();
+		
 	}
 	
 	
