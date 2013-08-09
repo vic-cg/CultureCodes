@@ -7,6 +7,6 @@
 	<classpathentry kind="lib" path="libraries/controlP5.jar"/>
 	<classpathentry kind="lib" path="libraries/core.jar"/>
 	<classpathentry kind="lib" path="libraries/toxiclibs_p5.jar"/>
-	<classpathentry kind="lib" path="libraries/toxiclibscore.jar"/>
+	<classpathentry kind="lib" path="libraries/toxiclibscore.jar" sourcepath="/Users/rhazesspell/CODE/SRC/BitBucket/toxiclibs/src.core"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

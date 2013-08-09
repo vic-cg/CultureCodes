@@ -34,9 +34,8 @@ public class CultureCodes extends PApplet {
 		gridView = new EquilateralGridView(this, grid);
 		
 		
-		grid.addGrid(new Vec3D(.8f,0.2f,0.f), floor(15));
-		
-		grid.addGrid(new Vec3D(.73f,0.27f,0.f), floor(random(1,10)));
+		babyGrid = grid.addGrid(new Vec3D(16,4,0), floor(1));		
+//		grid.addGrid(new Vec3D(.73f,0.27f,0.f), floor(random(1,10)));
 //		grid.addGrid(new Vec3D(.8f,0.2f,0.f), floor(random(1,10)));
 		
 	}
@@ -46,7 +45,7 @@ public class CultureCodes extends PApplet {
 		background(255);
 		fill(200,100,100,100);
 //		translate(0.5f*width - grid.getCentroid().getComponent(0), 0.67f*height - grid.getCentroid().getComponent(1));
-		translate(0.0f * width, 0.667f*height);
+		translate(0.5f * width, 0.667f*height);
 
 		
 		fill(200,200,0);
@@ -62,15 +61,15 @@ public class CultureCodes extends PApplet {
 			ellipse(pt.x, pt.y,1.0f/triHeight, 1.0f/triHeight);
 		}
 
-
-		translate(.866f / 1.5f * height, -.333333f*height );		
-		fill(0,100);
-		pushMatrix();
-		scale(-triHeight);
-		noStroke();
-		gridView.draw(gfx);
-		popMatrix();
-		ellipse(0,0,3,3);
+//
+//		translate(.866f / 1.5f * height, -.333333f*height );		
+//		fill(0,100);
+//		pushMatrix();
+//		scale(-triHeight);
+//		noStroke();
+//		gridView.draw(gfx);
+//		popMatrix();
+//		ellipse(0,0,3,3);
 		
 		noLoop();
 		
