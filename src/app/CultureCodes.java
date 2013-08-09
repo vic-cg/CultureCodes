@@ -55,7 +55,7 @@ public class CultureCodes extends PApplet {
 		fill(200,200,0);
 		pushMatrix();
 		scale(triHeight); println(triHeight);
-		gridView.draw(gfx,triHeight);			
+		gridView.draw(gfx);			
 		popMatrix();
 		
 		//draw grid points
@@ -80,7 +80,7 @@ public class CultureCodes extends PApplet {
 		pushMatrix();
 		scale(-triHeight);
 		noStroke();
-		gridView.draw(gfx, triHeight);
+		gridView.draw(gfx);
 		popMatrix();
 		ellipse(0,0,3,3);
 		
