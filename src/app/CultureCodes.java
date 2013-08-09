@@ -18,7 +18,7 @@ public class CultureCodes extends PApplet {
 	int RES = 20;
 	float triHeight;
 	ArrayList<Vec3D> bs = new ArrayList<Vec3D>();	
-	EquilateralGrid grid, babyGrid;
+	EquilateralGrid grid, babyGrid, destGrid;
 	EquilateralGridView gridView;
 	
 	@Override
@@ -34,9 +34,8 @@ public class CultureCodes extends PApplet {
 		gridView = new EquilateralGridView(this, grid);
 		
 		
-		babyGrid = grid.addGrid(new Vec3D(16,4,0), floor(10));		
-//		grid.addGrid(new Vec3D(.73f,0.27f,0.f), floor(random(1,10)));
-//		grid.addGrid(new Vec3D(.8f,0.2f,0.f), floor(random(1,10)));
+		babyGrid = grid.addGrid(new Vec3D(16,4,0), floor(10));
+		destGrid = grid.addGrid(new Vec3D(19,1,0), floor(2));
 		
 	}
 	
@@ -47,14 +46,23 @@ public class CultureCodes extends PApplet {
 //		translate(0.5f*width - grid.getCentroid().getComponent(0), 0.67f*height - grid.getCentroid().getComponent(1));
 		translate(0.5f * width, 0.667f*height);
 		
-		if(frameCount % 90 == 0) {
-			int a = floor(random(0,grid.getRes()));
-			int b = floor(random(0,grid.getRes() - a));
-			int c = max(grid.getRes() - a - b, 0);
-			Vec3D move = new Vec3D(a,b,c);
-			
-			babyGrid.moveRelativeTo(grid, move);
-		}
+		
+		float t = map(mouseX,0,width,0,1.0f);
+		Vec3D current = babyGrid.getApexInParentSpace(grid);
+		
+		Vec3D beg = new Vec3D(16,4,0);
+		Vec3D end = new Vec3D(19,1,0);
+		Vec3D newApex =  beg.interpolateTo(end, t);
+		babyGrid.moveRelativeTo(grid, newApex);
+		
+//		if(frameCount % 90 == 0) {
+//			int a = floor(random(0,grid.getRes()));
+//			int b = floor(random(0,grid.getRes() - a));
+//			int c = max(grid.getRes() - a - b, 0);
+//			Vec3D move = new Vec3D(a,b,c);
+//			
+//			babyGrid.moveRelativeTo(grid, move);
+//		}
 		
 		fill(200,200,0);
 		pushMatrix();

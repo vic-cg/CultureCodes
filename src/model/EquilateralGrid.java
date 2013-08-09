@@ -106,6 +106,16 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 
 		return result;
 	}
+	
+	/**
+	 * return the non normalized barycentric coordinate in parent space
+	 * @param g
+	 * @return
+	 */
+	public Vec3D getApexInParentSpace(EquilateralGrid g) {		
+		return g.toBarycentric( tri.a );
+	}
+
 
 	/**
 	 * move this grid relative to the coordinate system of another grid. The method assumes that
@@ -156,6 +166,9 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 		return tri;
 	}
 
+	public Vec3D toBarycentric(Vec2D p) {
+		return tri.toBarycentric(p);
+	}
 	public Vec2D fromBarycentric(Vec3D b) {
 		return tri.fromBarycentric(b);
 	}
