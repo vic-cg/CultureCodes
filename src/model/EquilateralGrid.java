@@ -137,6 +137,8 @@ public class EquilateralGrid { // this is essentially a Proxy for a Triangle2D
 				+ A.y * negcos120);
 		result.setVerts(A, B, C);
 		
+		p.println(B+","+C);
+		
 		return result;
 	}	
 	
