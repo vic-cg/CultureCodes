@@ -27,10 +27,7 @@ public class CultureCodes extends PApplet {
 		noStroke();
 		gfx=new ToxiclibsSupport(this);
 		
-		//magic number from geometry of equilateral triangle (height = 1.5; side = 1.73 )
 		triHeight = height / 1.5f;
-//		triHeight /= 1.73f;
-		
 		
 		grid = EquilateralGrid.constructGrid(RES);
 		bs = grid.getGridPoints();
@@ -54,7 +51,7 @@ public class CultureCodes extends PApplet {
 		
 		fill(200,200,0);
 		pushMatrix();
-		scale(triHeight); println(triHeight);
+		scale(triHeight); 
 		gridView.draw(gfx);			
 		popMatrix();
 		
@@ -65,17 +62,8 @@ public class CultureCodes extends PApplet {
 			ellipse(pt.x, pt.y,1.0f/triHeight, 1.0f/triHeight);
 		}
 
-//		pushMatrix();
-//		translate(0.5f*width,-0.3f*height);
-//		scale(-1.0f * triSize);
-//		gridView.draw(gfx,triSize);
-//		popMatrix();
-		
 
-		translate(.866f / 1.5f * height,0 );
-//		stroke(200,0,0);
-		line(0,0,0,height);
-		translate(0.0f, -.333333f*height);
+		translate(.866f / 1.5f * height, -.333333f*height );		
 		fill(0,100);
 		pushMatrix();
 		scale(-triHeight);
@@ -84,7 +72,6 @@ public class CultureCodes extends PApplet {
 		popMatrix();
 		ellipse(0,0,3,3);
 		
-//		popMatrix();
 		noLoop();
 		
 	}
